@@ -918,45 +918,49 @@ const headerRowTextColors = {
 
 const lightModeWarnings = [
     {
-        title: "ARE YOU SURE?",
+        id: "sure", title: "ARE YOU SURE?",
         text: "Your retinas are about to be vaporized by the power of a thousand suns."
     },
     {
-        title: "FLASHBANG INCOMING!",
+        id: "flashbang", title: "FLASHBANG INCOMING!",
         text: "Are you absolutely sure you want to scorch your eyeballs?"
     },
     {
-        title: "WHO HURT YOU?",
+        id: "hurt", title: "WHO HURT YOU?",
         text: "Why on earth would anyone play an incremental game in light mode?"
     },
     {
-        title: "ERROR 404: SANITY NOT FOUND",
+        id: "sanity", title: "ERROR 404: SANITY NOT FOUND",
         text: "Why are you doing this to yourself? (Also, it might be extremely buggy)."
     },
     {
-        title: "THE FORBIDDEN ZONE",
+        id: "forbidden", title: "THE FORBIDDEN ZONE",
         text: "Bugs live here. Bright, blinding, untested bugs. Proceed at your own risk!"
     },
     {
-        title: "CRIME AGAINST HUMANITY",
+        id: "crime", title: "CRIME AGAINST HUMANITY",
         text: "Light mode is highly unstable, experimental, and frankly, illegal in 50 countries."
     },
     {
-        title: "VAMPIRE DETECTION TEST",
+        id: "vampire", title: "VAMPIRE DETECTION TEST",
         text: "Are you trying to test your limits? Because this is going to hurt. A lot."
     },
     {
-        title: "A DEVELOPER IS CRYING",
+        id: "crying", title: "A DEVELOPER IS CRYING",
         text: "Legend says that every time someone turns on light mode, a dev cries. Do you want that?"
     },
     {
-        title: "CONGRATULATIONS!",
+        id: "congrats", title: "CONGRATULATIONS!",
         text: "You found the 'Flashbang' button. Ready to see the light (and literally nothing else)?"
     }
 ];
 
 function getRandomWarning() {
-    return lightModeWarnings[floor(random() * lightModeWarnings.length)];
+    const w = lightModeWarnings[floor(random() * lightModeWarnings.length)];
+    return {
+        title: I18N.t("lm_" + w.id + "_title", w.title),
+        text: I18N.t("lm_" + w.id + "_text", w.text)
+    };
 }
 
 /**

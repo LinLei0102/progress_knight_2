@@ -167,14 +167,15 @@ function buildResourceTooltipHTML(resourceName, currentValue, requiredValue, pen
     const progressPercent = renderResult.progressPercent
     const addedPercent = renderResult.pendingPercent - renderResult.progressPercent
     const pendingPercent = renderResult.pendingPercent
+    const displayResourceName = I18N.n(resourceName)
     let result = `
-        <div class="shop-tooltip-header">Requirements Goal Tracker: ${resourceName}</div>
+        <div class="shop-tooltip-header">${I18N.f("requirementsGoalTracker", "Requirements Goal Tracker: " + displayResourceName, { name: displayResourceName })}</div>
         <div class="job-tooltip-body" style="text-align: left; font-size: 0.85em;">
-            <div><span class="label">Current:</span> <span><span class="${renderResult.targetColorClass}">${format(currentValue)}</span> (${format(progressPercent)}%)</span></div>`
+            <div><span class="label">${I18N.t("current", "Current:")}</span> <span><span class="${renderResult.targetColorClass}">${format(currentValue)}</span> (${format(progressPercent)}%)</span></div>`
     if (addedPercent > 0)
-        result += `<div><span class="label">Pending:</span> <span><span class="${renderResult.targetColorClass}">${format(pendingValue)}</span> (${format(addedPercent)}%)</span></div>`
+        result += `<div><span class="label">${I18N.t("pending", "Pending:")}</span> <span><span class="${renderResult.targetColorClass}">${format(pendingValue)}</span> (${format(addedPercent)}%)</span></div>`
 
-    result += `<div><span class="label">Required:</span> <span class="${renderResult.targetColorClass}">${format(requiredValue)}</span></div>            
+    result += `<div><span class="label">${I18N.t("required", "Required:")}</span> <span class="${renderResult.targetColorClass}">${format(requiredValue)}</span></div>            
         </div>`
 
     if (resourceName == "Essence" && gameData.requirements["Faint Hope"].completed) {
@@ -185,11 +186,11 @@ function buildResourceTooltipHTML(resourceName, currentValue, requiredValue, pen
 
 
         result += `<div class="job-tooltip-body" style="text-align: left; font-size: 0.85em;">
-        <div><span class="label">Faint Hope mult:</span> ${format(faintHopeEffect)}</div>
-        <div><span class="label">Faint Hope time:</span> ${formatTime(faintHopeTime)}</div>
-        <div><span class="label">Essence per second:</span> <span class="${renderResult.targetColorClass}">${format(gameData.stats.EssencePerSecond)}</span></div>
-        <div><span class="label">Maximum essence per second:</span> <span class="${renderResult.targetColorClass}">${format(gameData.stats.maxEssencePerSecond)} </span> at ${formatTime(gameData.stats.maxEssencePerSecondRt)}</div>
-        <div><span class="label">ETA to next Milestone:</span> ${ETA > 0 ? "<span class=\"w3-text-orange\">" + formatTime(ETA) + "</span>" : "<span style=\"color:limegreen;\">[Ready]</span>"}</div>
+        <div><span class="label">${I18N.t("faintHopeMult", "Faint Hope mult:")}</span> ${format(faintHopeEffect)}</div>
+        <div><span class="label">${I18N.t("faintHopeTime", "Faint Hope time:")}</span> ${formatTime(faintHopeTime)}</div>
+        <div><span class="label">${I18N.t("essencePerSecond", "Essence per second:")}</span> <span class="${renderResult.targetColorClass}">${format(gameData.stats.EssencePerSecond)}</span></div>
+        <div><span class="label">${I18N.t("maxEssencePerSecond", "Maximum essence per second:")}</span> <span class="${renderResult.targetColorClass}">${format(gameData.stats.maxEssencePerSecond)} </span>${I18N.t("atTime", " at ")}${formatTime(gameData.stats.maxEssencePerSecondRt)}</div>
+        <div><span class="label">${I18N.t("etaNextMilestone", "ETA to next Milestone:")}</span> ${ETA > 0 ? "<span class=\"w3-text-orange\">" + formatTime(ETA) + "</span>" : "<span style=\"color:limegreen;\">" + I18N.t("ready", "[Ready]") + "</span>"}</div>
         </div>`
     }
 
@@ -197,13 +198,13 @@ function buildResourceTooltipHTML(resourceName, currentValue, requiredValue, pen
         const { readyInGameTime, readyInRealTime } = calculateETA(currentValue, requiredValue, speed)
         result += `
         <div class="job-tooltip-body" style="text-align: left; font-size: 0.85em;">
-            <div>Game Time: ${readyInGameTime}</div>
-            <div>Real Time: ${readyInRealTime}</div>
+            <div>${I18N.t("gameTime", "Game Time:")} ${readyInGameTime}</div>
+            <div>${I18N.t("realTime", "Real Time:")} ${readyInRealTime}</div>
         </div>`;
     }
 
     result += `<div class="job-tooltip-footer" style="text-align: left; font-size: 0.85em;">
-                <span class="label" style="color: #fff; font-weight: bold;">Progress:</span> 
+                <span class="label" style="color: #fff; font-weight: bold;">${I18N.t("progress", "Progress:")}</span> 
                 <span>${format(progressPercent)}% (${format(pendingPercent)}%)</span>
             </div>`
     return result
@@ -266,12 +267,12 @@ function renderTooltipContent(tooltip, data, type) {
 function renderTooltipContentMetaPerk(tooltip, data, type) {
     const name = data
     const perkCost = getPerkCost(name);
-    let displayName = "LOCKED"
-    let baseDescription = "Collect a total of " + perkCost + " MPP to unlock"
+    let displayName = I18N.t("locked", "LOCKED")
+    let baseDescription = I18N.f("collectToUnlock", "Collect a total of " + perkCost + " MPP to unlock", { n: perkCost })
 
     if (perkCost <= getTotalPerkPoints()) {
-        displayName = perk_names[name];
-        baseDescription = perk_descriptions[name];
+        displayName = I18N.n(name) !== name ? I18N.n(name) : perk_names[name];
+        baseDescription = I18N.lore("perk:" + name, perk_descriptions[name]);
     }
 
 
@@ -279,7 +280,7 @@ function renderTooltipContentMetaPerk(tooltip, data, type) {
         <div class="tooltip-header">${displayName}</div>
         <div class="tooltip-body">${baseDescription}</div>    
         <div class="tooltip-footer">
-            <div><span class="label">Cost:</span> <span class="color-perk-points">${perkCost} MPP</span></div>
+            <div><span class="label">${I18N.t("cost", "Cost:")}</span> <span class="color-perk-points">${perkCost} MPP</span></div>
         </div>
     `;
 
@@ -318,7 +319,7 @@ function renderTooltipContentDarkOrbs(tooltip, task, type) {
  * @param {string} type
  */
 function renderTooltipContentSimple(tooltip, data, type) {
-    const text = tooltips[data]
+    const text = I18N.lore(data, tooltips[data] || "")
     let tooltipHTML = `
         <div class="generic-tooltip-header" style="font-weight: bold; margin-bottom: 5px;">
             ${text}
@@ -396,9 +397,9 @@ function getHeroicRequiredTooltip(taskName) {
                 if (reqvalue <= 20)
                     continue
                 else
-                    prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
+                    prevReq = " " + I18N.t("greatPrefix", "Great ") + I18N.n(requirement.task) + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
             } else {
-                reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
+                reqlist += " " + I18N.t("greatPrefix", "Great ") + I18N.n(requirement.task) + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
             }
         }
     }
@@ -417,15 +418,15 @@ function getHeroicRequiredTooltip(taskName) {
 function renderTooltipContentJob(tooltip, data, type) {
     const job = gameData.jobData[data]
 
-    const displayName = (job.isHero ? "Great " : "") + job.name;
+    const displayName = (job.isHero ? I18N.t("greatPrefix", "Great ") : "") + I18N.n(job.name);
     const currentLevelFormatted = formatLevel(job.level);
-    const baseDescription = tooltips[job.name] || "";
+    const baseDescription = I18N.lore(job.name, tooltips[job.name] || "");
     const progressPercent = (job.getTaskXpProgressFraction() * 100);
 
     let tooltipHTML = `
         <div class="job-tooltip-header">
             ${displayName}
-            <span class="tooltip-lvl-span">Lv. ${currentLevelFormatted}</span>
+            <span class="tooltip-lvl-span">${I18N.f("lv_label", "Lv. " + currentLevelFormatted, { n: currentLevelFormatted })}</span>
         </div>
         <div class="job-tooltip-body">${baseDescription}</div>
     `;
@@ -436,12 +437,12 @@ function renderTooltipContentJob(tooltip, data, type) {
 
     tooltipHTML += `
         <div class="job-tooltip-footer">
-            <div><span class="label">Progress:</span> <span>${job.getCurrentXpFormatted()} / ${job.getMaxXpFormatted()} (${format(progressPercent)}%)</span></div>
-            <div><span class="label">XP Gain:</span> <span class="w3-text-green">${job.getXpGainFormatted()} / day</span></div>
-            <div><span class="label">Time to Level Up:</span> <span class="w3-text-blue">${job.getGameDaysLeftFormatted()}</span></div>
-            <div><span class="label">ETA (realtime):</span> <span class="w3-text-orange">${job.getRealTimeLeftFormatted()}</span></div>
+            <div><span class="label">${I18N.t("progress", "Progress:")}</span> <span>${job.getCurrentXpFormatted()} / ${job.getMaxXpFormatted()} (${format(progressPercent)}%)</span></div>
+            <div><span class="label">${I18N.t("xpGain", "XP Gain:")}</span> <span class="w3-text-green">${job.getXpGainFormatted()} ${I18N.t("per_day", "/ day")}</span></div>
+            <div><span class="label">${I18N.t("timeToLevelUp", "Time to Level Up:")}</span> <span class="w3-text-blue">${job.getGameDaysLeftFormatted()}</span></div>
+            <div><span class="label">${I18N.t("etaRealtime", "ETA (realtime):")}</span> <span class="w3-text-orange">${job.getRealTimeLeftFormatted()}</span></div>
             <div class="income-desc">
-                <span class="label">Income:</span> 
+                <span class="label">${I18N.t("Income", "Income:")}</span> 
                 <span class="income-value">
                     <span></span>
                     <span></span>
@@ -471,15 +472,15 @@ function renderTooltipContentJob(tooltip, data, type) {
 function renderTooltipContentSkill(tooltip, data, type) {
     const skill = gameData.skillData[data]
 
-    const displayName = (skill.isHero ? "Great " : "") + skill.name;
+    const displayName = (skill.isHero ? I18N.t("greatPrefix", "Great ") : "") + I18N.n(skill.name);
     const currentLevelFormatted = formatLevel(skill.level);
-    const baseDescription = tooltips[skill.name] || "";
+    const baseDescription = I18N.lore(skill.name, tooltips[skill.name] || "");
     const progressPercent = (skill.getTaskXpProgressFraction() * 100);
 
     let tooltipHTML = `
         <div class="skill-tooltip-header">
             ${displayName}
-            <span class="tooltip-lvl-span">Lv. ${currentLevelFormatted}</span>
+            <span class="tooltip-lvl-span">${I18N.f("lv_label", "Lv. " + currentLevelFormatted, { n: currentLevelFormatted })}</span>
         </div>
         <div class="skill-tooltip-body">${baseDescription}</div>
     `;
@@ -490,11 +491,11 @@ function renderTooltipContentSkill(tooltip, data, type) {
 
     tooltipHTML += `
         <div class="skill-tooltip-footer">
-            <div><span class="label">Progress:</span> <span>${skill.getCurrentXpFormatted()} / ${skill.getMaxXpFormatted()} (${format(progressPercent)}%)</span></div>
-            <div><span class="label">XP Gain:</span> <span class="w3-text-green">${skill.getXpGainFormatted()} / day</span></div>
-            <div><span class="label">Time to Level Up:</span> <span class="w3-text-blue">${skill.getGameDaysLeftFormatted()}</span></div>
-            <div><span class="label">ETA (realtime):</span> <span class="w3-text-orange">${skill.getRealTimeLeftFormatted()}</span></div>
-            <div class="skill-tooltip-footer-effect"><span class="label">Effect:</span> ${skill.getEffectDescription()}</div>
+            <div><span class="label">${I18N.t("progress", "Progress:")}</span> <span>${skill.getCurrentXpFormatted()} / ${skill.getMaxXpFormatted()} (${format(progressPercent)}%)</span></div>
+            <div><span class="label">${I18N.t("xpGain", "XP Gain:")}</span> <span class="w3-text-green">${skill.getXpGainFormatted()} ${I18N.t("per_day", "/ day")}</span></div>
+            <div><span class="label">${I18N.t("timeToLevelUp", "Time to Level Up:")}</span> <span class="w3-text-blue">${skill.getGameDaysLeftFormatted()}</span></div>
+            <div><span class="label">${I18N.t("etaRealtime", "ETA (realtime):")}</span> <span class="w3-text-orange">${skill.getRealTimeLeftFormatted()}</span></div>
+            <div class="skill-tooltip-footer-effect"><span class="label">${I18N.t("Effect", "Effect:")}</span> ${skill.getEffectDescription()}</div>
         </div>
     `;
 
@@ -520,16 +521,16 @@ function renderTooltipContentItem(tooltip, data, type) {
             : (item.isProperty ? headerRowColors["Properties"] : headerRowColors["Misc"]);
     }
 
-    const baseDescription = tooltips[item.name] || "";
+    const baseDescription = I18N.lore(item.name, tooltips[item.name] || "");
 
     let tooltipHTML = `
         <div class="shop-tooltip-header ${isLegendary ? 'legendary' : ''}">
             <span class="shop-tooltip-status-dot" style="background-color: ${statusDotColor};"></span>
-            ${item.name}
+            ${I18N.n(item.name)}
         </div>
         <div class="shop-tooltip-body">${baseDescription}</div>
         <div class="shop-tooltip-footer">
-            <div class="effect-desc"><span class="label">Effect:</span> ${item.getEffectDescription()}</div>
+            <div class="effect-desc"><span class="label">${I18N.t("Effect", "Effect:")}</span> ${item.getEffectDescription()}</div>
         </div>
     `;
 
@@ -550,12 +551,12 @@ function calculateETA(current, required, genSpeed) {
 
 
     if (required == Infinity) {
-        readyInRealTime = `<span style="color:red;">[Never]</span>`;
+        readyInRealTime = `<span style="color:red;">${I18N.t("never", "[Never]")}</span>`;
         readyInGameTime = readyInRealTime;
     }
     else if (current >= required || required == 0) {
         percent = 100;
-        readyInRealTime = `<span style="color:limegreen;">[Ready]</span>`;
+        readyInRealTime = `<span style="color:limegreen;">${I18N.t("ready", "[Ready]")}</span>`;
         readyInGameTime = readyInRealTime;
     }
     else {
@@ -570,12 +571,12 @@ function calculateETA(current, required, genSpeed) {
                 readyInGameTime = `<span class="w3-text-blue">${goalGameTime}</span>`;
             }
             else {
-                readyInRealTime = `<span class="w3-text-orange">[Paused]</span>`;
+                readyInRealTime = `<span class="w3-text-orange">${I18N.t("paused", "[Paused]")}</span>`;
                 readyInGameTime = readyInRealTime;
             }
         }
         else {
-            readyInRealTime = `<span style="color:red;">[Never]</span>`;
+            readyInRealTime = `<span style="color:red;">${I18N.t("never", "[Never]")}</span>`;
             readyInGameTime = readyInRealTime;
         }
     }
@@ -622,7 +623,7 @@ function renderTooltipContentRequirement(tooltip, data, type) {
     }
     else if (gameData.taskData[data]) {
         tooltipHTML = `
-            <div class="shop-tooltip-header">Requirements Goal Tracker</div>
+            <div class="shop-tooltip-header">${I18N.t("goalTrackerTitle", "Requirements Goal Tracker")}</div>
             <div class="job-tooltip-body" style="text-align: left; font-size: 0.85em;">
         `;
         let progressPercent = 0;
@@ -641,7 +642,7 @@ function renderTooltipContentRequirement(tooltip, data, type) {
                 reqCount++;
                 tooltipHTML += `
                     <div style="margin-bottom: 0.5em; color: #888; border-bottom: 1px dotted #333; padding-bottom: 0.5em;">
-                        <span class="label">${requirement.task}:</span> Completed (Lv. ${curReqVal})
+                        <span class="label">${I18N.n(requirement.task)}:</span> ${I18N.f("reqCompletedLine", "Completed (Lv. " + curReqVal + ")", { lv: curReqVal })}
                     </div>
                 `;
             } else {
@@ -653,8 +654,8 @@ function renderTooltipContentRequirement(tooltip, data, type) {
 
                 const daysLeftForCurrentLevel = reqTask.getGameDaysLeft();
                 const totalGameDaysLeft = daysLeftForCurrentLevel + reqTask.getGameDaysTotalTillLevel(curReqVal);
-                let goalGameTime = "[A lot]";
-                let goalRealTime = "[A lot]";
+                let goalGameTime = I18N.t("a lot", "[A lot]");
+                let goalRealTime = I18N.t("a lot", "[A lot]");
 
                 if (daysLeftForCurrentLevel !== Infinity) {
                     goalGameTime = formatGameDays(totalGameDaysLeft);
@@ -662,16 +663,16 @@ function renderTooltipContentRequirement(tooltip, data, type) {
                     if (gameSpeed > 0) goalRealTime = formatTime(totalGameDaysLeft / gameSpeed);
                     const lifespan = getLifespan();
                     if (totalGameDaysLeft + gameData.days > lifespan) {
-                        goalGameTime += ' <span style="color: red;">(not enough lifespan)</span>';
+                        goalGameTime += ' <span style="color: red;">' + I18N.t("not enough lifespan", "(not enough lifespan)") + '</span>';
                     }
                 }
                 tooltipHTML += `
                     <div style="margin-bottom: 0.5em; border-bottom: 1px dotted #333; padding-bottom: 0.5em;">
-                        <span class="label" style="color: #fff; font-weight: bold;">${requirement.task}:</span>
-                        <span style="color: #ffeb3b;">Lv. ${reqTask.level}/${curReqVal}</span>
+                        <span class="label" style="color: #fff; font-weight: bold;">${I18N.n(requirement.task)}:</span>
+                        <span style="color: #ffeb3b;">${I18N.f("lv_label", "Lv. " + reqTask.level, { n: reqTask.level })}/${curReqVal}</span>
                         <div style="padding-left: 8px; color: #aaa; font-size: 0.95em;">
-                            <div>Game Time: <span class="w3-text-blue">${goalGameTime}</span></div>
-                            <div>Real Time: <span class="w3-text-orange">${goalRealTime}</span></div>
+                            <div>${I18N.t("gameTime", "Game Time:")} <span class="w3-text-blue">${goalGameTime}</span></div>
+                            <div>${I18N.t("realTime", "Real Time:")} <span class="w3-text-orange">${goalRealTime}</span></div>
                         </div>
                     </div>
                 `;
@@ -679,13 +680,13 @@ function renderTooltipContentRequirement(tooltip, data, type) {
         }
         if (reqCount > 0) {
             progressPercent /= reqCount;
-            tooltipHTML += `<div><span class="label" style="color: #fff; font-weight: bold;">Progress:</span> <span>${format(progressPercent)}%</span></div>`;
+            tooltipHTML += `<div><span class="label" style="color: #fff; font-weight: bold;">${I18N.t("progress", "Progress:")}</span> <span>${format(progressPercent)}%</span></div>`;
         }
         tooltipHTML += `</div>`;
     }
     else if (gameData.itemData[data]) {
         tooltipHTML = `
-            <div class="shop-tooltip-header">Requirements Goal Tracker</div>
+            <div class="shop-tooltip-header">${I18N.t("goalTrackerTitle", "Requirements Goal Tracker")}</div>
             <div class="job-tooltip-body" style="text-align: left; font-size: 0.85em;">
         `;
         let goalGameTime = "Infinity";
@@ -701,22 +702,22 @@ function renderTooltipContentRequirement(tooltip, data, type) {
                 if (gameSpeed > 0) goalRealTime = formatTime(totalGameDaysLeft / gameSpeed);
                 const lifespan = getLifespan();
                 if (totalGameDaysLeft + gameData.days > lifespan) {
-                    goalGameTime += ' <span style="color: red;">(not enough lifespan)</span>';
+                    goalGameTime += ' <span style="color: red;">' + I18N.t("not enough lifespan", "(not enough lifespan)") + '</span>';
                 }
             } else {
-                goalGameTime = '[Negative Net]';
-                goalRealTime = '[Never]';
+                goalGameTime = I18N.t('negative net', '[Negative Net]');
+                goalRealTime = I18N.t('never', '[Never]');
             }
         }
         const progressPercent = getDynamicProgress(gameData.coins, curRequiredValue);
         tooltipHTML += `
             <div style="margin-bottom: 6px; border-bottom: 1px dotted #333; padding-bottom: 4px;">
                 <div style="padding-left: 8px; color: #aaa; font-size: 0.95em;">
-                    <div>Game Time: <span class="w3-text-blue">${goalGameTime}</span></div>
-                    <div>Real Time: <span class="w3-text-orange">${goalRealTime}</span></div>
+                    <div>${I18N.t("gameTime", "Game Time:")} <span class="w3-text-blue">${goalGameTime}</span></div>
+                    <div>${I18N.t("realTime", "Real Time:")} <span class="w3-text-orange">${goalRealTime}</span></div>
                 </div>
             </div>
-            <div><span class="label" style="color: #fff; font-weight: bold;">Progress:</span> <span>${format(progressPercent)}%</span></div>
+            <div><span class="label" style="color: #fff; font-weight: bold;">${I18N.t("progress", "Progress:")}</span> <span>${format(progressPercent)}%</span></div>
         </div>`;
     }
     else if (milestoneData && milestoneData[data]) {
@@ -744,12 +745,12 @@ function renderTooltipContentEvilPerk(tooltip, data, type) {
     let readyInGameTime = "";
 
     if (perkCost == Infinity) {
-        readyInRealTime = `<span style="color:red;">[Never]</span>`;
+        readyInRealTime = `<span style="color:red;">${I18N.t("never", "[Never]")}</span>`;
         readyInGameTime = readyInRealTime;
     }
     else if (gameData.evil_perks_points >= perkCost) {
         percent = 100;
-        readyInRealTime = `<span style="color:limegreen;">[Ready]</span>`;
+        readyInRealTime = `<span style="color:limegreen;">${I18N.t("ready", "[Ready]")}</span>`;
         readyInGameTime = readyInRealTime;
     }
     else {
@@ -765,12 +766,12 @@ function renderTooltipContentEvilPerk(tooltip, data, type) {
                 readyInGameTime = `<span class="w3-text-blue">${goalGameTime}</span>`;
             }
             else {
-                readyInRealTime = `<span class="w3-text-orange">[Paused]</span>`;
+                readyInRealTime = `<span class="w3-text-orange">${I18N.t("paused", "[Paused]")}</span>`;
                 readyInGameTime = readyInRealTime;
             }
         }
         else {
-            readyInRealTime = `<span style="color:red;">[Never]</span>`;
+            readyInRealTime = `<span style="color:red;">${I18N.t("never", "[Never]")}</span>`;
             readyInGameTime = readyInRealTime;
         }
     }
@@ -780,22 +781,22 @@ function renderTooltipContentEvilPerk(tooltip, data, type) {
 
     let footer = "";
     let body = "";
-    const header = { 1: "The Eye Age Requirement", 2: "Evil Age Requirement", 3: "The Void Age Requirement", 4: "Celestial Age Requirement", 5: "Receive Essence" };
+    const header = { 1: I18N.t("eyeAgeReq", "The Eye Age Requirement"), 2: I18N.t("evilAgeReq", "Evil Age Requirement"), 3: I18N.t("voidAgeReq", "The Void Age Requirement"), 4: I18N.t("celestialAgeReq", "Celestial Age Requirement"), 5: I18N.t("receiveEssence", "Receive Essence") };
 
     if (i < 5) {
-        body = `<div style="padding-bottom: 0.4em;"><span class="label">Current:</span> <span class="currency-bold epp-color">${getEvilPerkAgeRequirement(i)}</span> years</div>`;
+        body = `<div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("current", "Current:")}</span> <span class="currency-bold epp-color">${getEvilPerkAgeRequirement(i)}</span> ${I18N.t("yearsUnit", "years")}</div>`;
 
         if (perkCost !== Infinity) {
-            body += `<div style="padding-bottom: 0.8em;"><span class="label">Next:</span> <span class="currency-bold epp-color">${getEvilPerkAgeRequirement(i) - getEvilPerkAgeReduceBy(i)}</span> years</div>`;
-            body += `<div style="padding-bottom: 0.4em;"><span class="label">This Upgrade: </span>${-getEvilPerkAgeReduceBy(i)} years</div>`;
+            body += `<div style="padding-bottom: 0.8em;"><span class="label">${I18N.t("next", "Next:")}</span> <span class="currency-bold epp-color">${getEvilPerkAgeRequirement(i) - getEvilPerkAgeReduceBy(i)}</span> ${I18N.t("yearsUnit", "years")}</div>`;
+            body += `<div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("thisUpgrade", "This Upgrade:")} </span>${-getEvilPerkAgeReduceBy(i)} ${I18N.t("yearsUnit", "years")}</div>`;
         }
 
-        body += `<div style="padding-bottom: 0.8em;"><span class="label">Total Reduced: </span>${-getEvilPerkAgeReduceByTotal(i)} years</div>`;
+        body += `<div style="padding-bottom: 0.8em;"><span class="label">${I18N.t("totalReduced", "Total Reduced:")} </span>${-getEvilPerkAgeReduceByTotal(i)} ${I18N.t("yearsUnit", "years")}</div>`;
         if (perkCost !== Infinity) {
             body += `
-                <div style="padding-bottom: 0.4em;"><span class="label">Game Time:</span> <span>${readyInGameTime}</span></div>
-                <div style="padding-bottom: 0.4em;"><span class="label">Real Time:</span> <span>${readyInRealTime}</span></div>
-                <div style="padding-bottom: 0.4em;"><span class="label">Progress:</span> <span>${format(percent)}%</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("gameTime", "Game Time:")}</span> <span>${readyInGameTime}</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("realTime", "Real Time:")}</span> <span>${readyInRealTime}</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("progress", "Progress:")}</span> <span>${format(percent)}%</span></div>
             `;
         }
     }
@@ -803,31 +804,33 @@ function renderTooltipContentEvilPerk(tooltip, data, type) {
         const essenceReward = getEssenceReward();
         const essenceRewardPercent = getEssenceRewardPercent();
 
-        body = `<div style="padding-bottom: 0.4em;"><span class="label">Essence Reward:</span> <span class="currency-bold color-essence">${format(essenceReward)}</span></div>`;
-        body += `<div style="padding-bottom: 0.4em;"><span class="label">Essence Reward Bonus:</span> <span class="currency-bold color-essence">${essenceRewardPercent}</span>%</div>`;
+        body = `<div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("essenceReward", "Essence Reward:")}</span> <span class="currency-bold color-essence">${format(essenceReward)}</span></div>`;
+        body += `<div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("essenceRewardBonus", "Essence Reward Bonus:")}</span> <span class="currency-bold color-essence">${essenceRewardPercent}</span>%</div>`;
 
         if (perkCost !== Infinity) {
-            body += `<div style="padding-bottom: 0.8em;"><span class="label">Next Bonus:</span> <span class="currency-bold color-essence">${essenceRewardPercent + 10}</span>%</div>`;
+            body += `<div style="padding-bottom: 0.8em;"><span class="label">${I18N.t("nextBonus", "Next Bonus:")}</span> <span class="currency-bold color-essence">${essenceRewardPercent + 10}</span>%</div>`;
         }
 
         if (perkCost !== Infinity) {
             body += `
-                <div style="padding-bottom: 0.4em;"><span class="label">Game Time:</span> <span>${readyInGameTime}</span></div>
-                <div style="padding-bottom: 0.4em;"><span class="label">Real Time:</span> <span>${readyInRealTime}</span></div>
-                <div style="padding-bottom: 0.4em;"><span class="label">Progress:</span> <span>${format(percent)}%</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("gameTime", "Game Time:")}</span> <span>${readyInGameTime}</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("realTime", "Real Time:")}</span> <span>${readyInRealTime}</span></div>
+                <div style="padding-bottom: 0.4em;"><span class="label">${I18N.t("progress", "Progress:")}</span> <span>${format(percent)}%</span></div>
             `;
         }
     }
 
     if (perkCost !== Infinity) {
-        footer = `<div class="color-evil" style="font-size: 1.3em"><span class="label">Cost:</span> ${cost} EPP <span class="label">(${format(cost_percent)}% of current EPP)</span></div>`;
+        // 没有点数时比例是 Infinity，显示成 ∞ 而不是"无限"
+        const percentText = isFinite(cost_percent) ? format(cost_percent) : "\u221e";
+        footer = `<div class="color-evil" style="font-size: 1.3em"><span class="label">${I18N.t("cost", "Cost:")}</span> ${cost} EPP ${I18N.f("ofCurrentEpp", "(" + percentText + "% of current EPP)", { p: percentText })}</div>`;
     }
     else {
-        footer = `<div class="w3-text-orange" style="font-size: 1.2em">Maximum Rank</div>`;
+        footer = `<div class="w3-text-orange" style="font-size: 1.2em">${I18N.t("maxRank", "Maximum Rank")}</div>`;
     }
 
     let tooltipHTML = `
-        <div class="job-tooltip-header">${header[i]}<span style="padding-left:1em;" class="tooltip-lvl-span ${perkCost == Infinity ? "w3-text-orange" : ""}">Rank. ${getEvilPerkRank(i)}</span></div>
+        <div class="job-tooltip-header">${header[i]}<span style="padding-left:1em;" class="tooltip-lvl-span ${perkCost == Infinity ? "w3-text-orange" : ""}">${I18N.f("rank_label", "Rank. " + getEvilPerkRank(i), { n: getEvilPerkRank(i) })}</span></div>
         <div class="shop-tooltip-body" style="text-align: left;">${body}</div>
         <div class="shop-tooltip-footer">
             ${footer}

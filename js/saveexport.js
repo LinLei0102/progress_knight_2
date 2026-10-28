@@ -5,7 +5,7 @@ function importGameData() {
     try {
         const importExportBox = /** @type {HTMLInputElement} */ (elById("importExportBox"))
         if (!importExportBox || (importExportBox).value == "") {
-            alert(`It looks like you tried to load an empty save... Paste save data into the box, then click "Import Save" again.`)
+            alert(I18N.t("alertEmptySave", `It looks like you tried to load an empty save... Paste save data into the box, then click "Import Save" again.`))
             return
         }
 
@@ -14,7 +14,7 @@ function importGameData() {
             throw new Error("Invalid save structure");
         }
     } catch (error) {
-        alert("It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!")
+        alert(I18N.t("alertCorruptSave", "It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!"))
         return;
     }
 
@@ -27,7 +27,7 @@ function importGameData() {
 
     } catch (criticalError) {
         console.error("Critical import crash:", criticalError);
-        alert("Critical error: Failed to apply the new save. Your previous progress was kept safe. The page will now reload.");
+        alert(I18N.t("alertSaveApplyFailed", "Critical error: Failed to apply the new save. Your previous progress was kept safe. The page will now reload."));
     }
 
     // always reload
@@ -51,7 +51,7 @@ function importGameDataFromFile() {
             const saveContent = typeof result === "string" ? result.trim() : "";
 
             if (!saveContent) {
-                alert("Cannot read file or file is empty!");
+                alert(I18N.t("alertFileEmpty", "Cannot read file or file is empty!"));
                 return;
             }
 
@@ -63,7 +63,7 @@ function importGameDataFromFile() {
                     throw new Error("Invalid save structure");
                 }
             } catch (error) {
-                alert("It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!");
+                alert(I18N.t("alertCorruptSave", "It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!"));
                 return;
             }
 
@@ -74,7 +74,7 @@ function importGameDataFromFile() {
                 saveGameData(data);
             } catch (criticalError) {
                 console.error("Critical import crash:", criticalError);
-                alert("Critical error: Failed to apply the new save. Your previous progress was kept safe. The page will now reload.");
+                alert(I18N.t("alertSaveApplyFailed", "Critical error: Failed to apply the new save. Your previous progress was kept safe. The page will now reload."));
             }
 
             // always reload

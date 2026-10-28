@@ -101,7 +101,7 @@ function getPendingEvents() {
 	const currentEventId = getCurrentEventIdByDate(d);
 	if (currentEventId !== EVENTS.NONE) {
 		const data = eventsData[currentEventId];
-		events[0] = `<span class="${data.style}">${data.name}</span><span>active now, ends in ${formatTime(getSecondsUntilEventEnd())}</span>`;
+		events[0] = `<span class="${data.style}">${I18N.n(data.name)}</span><span>${I18N.f("eventActiveNow", "active now, ends in " + formatTime(getSecondsUntilEventEnd()), { t: formatTime(getSecondsUntilEventEnd()) })}</span>`;
 	}
 
 	const maxMinutesAhead = 7 * 24 * 60;
@@ -124,7 +124,7 @@ function getPendingEvents() {
 			const dateTimeString = blockStart.toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 			/*const dateString = blockStart.toLocaleDateString();*/
 
-			events[foundCount] = `<span class="${data.style}">${data.name}</span><span>${dateTimeString}</span>`;
+			events[foundCount] = `<span class="${data.style}">${I18N.n(data.name)}</span><span>${dateTimeString}</span>`;
 		}
 	}
 

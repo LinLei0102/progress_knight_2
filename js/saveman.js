@@ -227,7 +227,7 @@ function loadGameData() {
     } catch (error) {
         console.error(error)
         console.log(localStorage.getItem("gameDataSave"))
-        alert("It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!")
+        alert(I18N.t("alertCorruptSave", "It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!"))
     }
 }
 
@@ -242,10 +242,10 @@ async function resetGameData() {
     stopGameLoop()
 
     let isConfirmed = await customConfirm({
-        title: "HARD RESET",
-        text: "Are you absolutely sure you want to reset the game? You will lose ALL your progress forever!",
-        confirmText: "Yes, wipe everything",
-        cancelText: "No, save my save!",
+        title: I18N.t("hardResetTitle", "HARD RESET"),
+        text: I18N.t("hardResetText", "Are you absolutely sure you want to reset the game? You will lose ALL your progress forever!"),
+        confirmText: I18N.t("yesWipeEverything", "Yes, wipe everything"),
+        cancelText: I18N.t("noSaveMySave", "No, save my save!"),
         confirmColor: "red",
         cancelColor: "green",
         delay: 3000
@@ -257,12 +257,12 @@ async function resetGameData() {
     }
 
     isConfirmed = await customConfirm({
-        title: "FINAL WARNING",
-        text: "This action is irreversible. To confirm deletion, please type RESET in the field below:",
+        title: I18N.t("finalWarningTitle", "FINAL WARNING"),
+        text: I18N.t("finalWarningText", "This action is irreversible. To confirm deletion, please type RESET in the field below:"),
         requiredText: "RESET",
-        confirmText: "DELETE PERMANENTLY",
+        confirmText: I18N.t("deletePermanently", "DELETE PERMANENTLY"),
         confirmColor: "red",
-        cancelText: "I changed my mind",
+        cancelText: I18N.t("changedMyMind", "I changed my mind"),
         cancelColor: "green"
     });
 

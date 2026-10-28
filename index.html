@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="css/currencies.css">
 	<link rel="stylesheet" type="text/css" href="css/progressbars.css">
 	<link rel="stylesheet" type="text/css" href="css/modal.css">
+	<link rel="stylesheet" type="text/css" href="css/lang-zh.css">
 	<title>Progress Knight Quest</title>
 	<link rel="shortcut icon" href="img/logo.ico" />
 </head>
@@ -749,7 +750,7 @@
 								<div id="rebirthTab1" class="tabRebirth">
 									<div id="rebirthPage" class="page panel page-column">
 										<ul>
-											<li id="rebirthNote0" class="hidden">
+											<li id="rebirthNote0" class="hidden" data-i18n-block="block:rebirth0">
 												You stumble across a strange looking amulet on your <span
 													id="age0"></span>th birthday. It does not look like
 												it has any worth on the market given that it's made from cheap-looking
@@ -757,14 +758,14 @@
 												feel a weird urge to keep the amulet, so you slip it into your pocket
 												for safekeeping.
 											</li>
-											<li id="rebirthNote1" class="hidden">
+											<li id="rebirthNote1" class="hidden" data-i18n-block="block:rebirth1">
 												On your <span id="age1"></span>th birthday, you feel the amulet shiver
 												uncontrollably in your pocket. You take it
 												out and the constant shivering suddenly stops. More to your bizarre
 												surprise, you notice
 												a strange etching on the centre of the amulet.
 											</li>
-											<li id="rebirthNote2" class="hidden">
+											<li id="rebirthNote2" class="hidden" data-i18n-block="block:rebirth2">
 												<div style="margin-bottom: 0.4em">
 													On your <span id="age1a"></span>th birthday, you once again
 													encounter the strange, unexplained shivering from your
@@ -792,7 +793,7 @@
 													onClick="rebirthOne()">Touch the eye</button>
 												<br>
 											</li>
-											<li id="rebirthNote3" class="hidden">
+											<li id="rebirthNote3" class="hidden" data-i18n-block="block:rebirth3">
 												<div style="margin-bottom: 0.4em;">
 													Your gut instinct was right. The moment you hit the grand age of
 													<span id="age2a"></span>, you hear an ominous hum coming from the
@@ -819,7 +820,7 @@
 													onClick="rebirthTwo()">Embrace evil</button>
 												<br>
 											</li>
-											<li id="rebirthNote4" class="hidden">
+											<li id="rebirthNote4" class="hidden" data-i18n-block="block:rebirth4">
 												<div style="margin-bottom: 0.4em;">
 													A <span id="age3a"></span> years have come and gone and yet, you
 													still remain alive... somehow. You feel your amulet shivering again
@@ -838,7 +839,7 @@
 													<b>"Void Manipulation"</b> skills.
 												</i>
 											</li>
-											<li id="rebirthNote5" class="hidden">
+											<li id="rebirthNote5" class="hidden" data-i18n-block="block:rebirth5">
 												<div style="margin-bottom: 0.4em;">
 													<span id="age4a"></span> have passed... most of them spent serving
 													the Void, yet there is still a glimpse of humanity inside of you.
@@ -878,7 +879,7 @@
 														onClick="rebirthThree()">Transcend</button>
 												</div>
 											</li>
-											<li id="rebirthNote7" class="hidden">
+											<li id="rebirthNote7" class="hidden" data-i18n-block="block:rebirth7">
 												<i class="color-dark-matter">
 													You are starting to become way too powerful. The end of the universe
 													may be near...
@@ -901,7 +902,7 @@
 													style="margin-bottom: 0.4em; margin-top: 0.4em "
 													onClick="rebirthFour()">Collapse the universe</button>
 											</li>
-											<li id="rebirthNote8" class="hidden">
+											<li id="rebirthNote8" class="hidden" data-i18n-block="block:rebirth8">
 												<i class="color-hypercubes">
 													You have discovered the Metaverse!
 												</i>
@@ -1034,7 +1035,7 @@
 													id="darkMatterSkillsDisplay"></span></div>
 										</div>
 										<div style="padding-top:2em">
-											<div style="color:gray; padding-bottom:0.3em">
+											<div style="color:gray; padding-bottom:0.3em" data-i18n-block="block:resetHint">
 												You can only choose 1 upgrade in each category; pick wisely. You can
 												reset the abilities, but you will <b>NOT</b> get your <span
 													class="color-dark-matter">Dark Matter</span> back!
@@ -1048,7 +1049,7 @@
 												<button id="speedIsLife1" class="w3-button button"
 													onclick="buySpeedOfLife(1)">Buy</button> -
 												Multiply <span class="color-time-warping">Time Warping</span> by
-												<b>3x</b><span class="negative-effect">
+												<b>3x</b><span class="negative-effect" data-i18n-block="block:neg0">
 													,
 													but divide <span class="color-evil">Evil</span> gain by <b>2x</b>
 												</span>
@@ -1058,7 +1059,7 @@
 												<button id="speedIsLife2" class="w3-button button"
 													onclick="buySpeedOfLife(2)">Buy</button> -
 												Multiply <span class="color-time-warping">Time Warping</span> by
-												<b>7x</b><span class="negative-effect">
+												<b>7x</b><span class="negative-effect" data-i18n-block="block:neg1">
 													,
 													but divide <span class="color-essence">Essence</span> gain by
 													<b>2x</b>
@@ -1075,7 +1076,7 @@
 												<button id="yourGreatestDebt1" class="w3-button button"
 													onclick="buyYourGreatestDebt(1)">Buy</button> -
 												Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by
-												<b>500x</b><span class="negative-effect">
+												<b>500x</b><span class="negative-effect" data-i18n-block="block:neg2">
 													,
 													but divide <span class="color-income">Income</span> by <b>10x</b>
 												</span>
@@ -1084,7 +1085,7 @@
 											<div style="color:gray; padding-bottom:0.3em">
 												<button id="yourGreatestDebt2" class="w3-button button"
 													onclick="buyYourGreatestDebt(2)">Buy</button> -
-												Multiply <span class="color-evil">Evil gain</span> by <b>100x</b><span
+												Multiply <span class="color-evil">Evil gain</span> by <b>100x</b><span data-i18n-block="block:neg9"
 													class="negative-effect">
 													,
 													but divide <span class="color-income">Income</span> by <b>2x</b>
@@ -1100,7 +1101,7 @@
 												<button id="essenceCollector1" class="w3-button button"
 													onclick="buyEssenceCollector(1)">Buy</button> -
 												Multiply <span class="color-essence">Essence</span> gain by
-												<b>500x</b><span class="negative-effect">
+												<b>500x</b><span class="negative-effect" data-i18n-block="block:neg3">
 													,
 													but divide <span class="color-evil">Evil</span> gain by <b>2x</b>
 												</span>
@@ -1110,7 +1111,7 @@
 												<button id="essenceCollector2" class="w3-button button"
 													onclick="buyEssenceCollector(2)">Buy</button> -
 												Multiply <span class="color-essence">Essence</span> gain by
-												<b>1000x</b><span class="negative-effect">
+												<b>1000x</b><span class="negative-effect" data-i18n-block="block:neg4">
 													,
 													but divide <span class="color-income">Income</span> by <b>25x</b>
 												</span>
@@ -1125,7 +1126,7 @@
 												<button id="explosionOfTheUniverse1" class="w3-button button"
 													onclick="buyExplosionOfTheUniverse(1)">Buy</button> -
 												Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by
-												<b>1e100x</b><span class="negative-effect">
+												<b>1e100x</b><span class="negative-effect" data-i18n-block="block:neg5">
 													,
 													but divide <span class="color-essence">Essence</span> gain by
 													<b>2x</b>
@@ -1136,7 +1137,7 @@
 												<button id="explosionOfTheUniverse2" class="w3-button button"
 													onclick="buyExplosionOfTheUniverse(2)">Buy</button> -
 												Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by
-												<b>1e150x</b><span class="negative-effect">
+												<b>1e150x</b><span class="negative-effect" data-i18n-block="block:neg6">
 													,
 													but divide <span class="color-income">Income</span> by <b>1e5x</b>
 												</span>
@@ -1152,7 +1153,7 @@
 												<button id="multiverseExplorer1" class="w3-button button"
 													onclick="buyMultiverseExplorer(1)">Buy</button> -
 												Multiply <span class="color-essence">Essence</span> gain by
-												<b>5000x</b><span class="negative-effect">
+												<b>5000x</b><span class="negative-effect" data-i18n-block="block:neg7">
 													,
 													but divide <span class="color-time-warping">Time Warping</span> by
 													<b>1000x</b>
@@ -1163,7 +1164,7 @@
 												<button id="multiverseExplorer2" class="w3-button button"
 													onclick="buyMultiverseExplorer(2)">Buy</button> -
 												Multiply <span class="color-essence">Essence</span> gain by
-												<b>10000x</b><span class="negative-effect">
+												<b>10000x</b><span class="negative-effect" data-i18n-block="block:neg8">
 													,
 													but divide <span class="color-dark-matter">Dark Matter</span> gain
 													by <b>100x</b>
@@ -1387,6 +1388,13 @@
 											style="margin-bottom: 1em; display: flex; flex-direction: column; gap: 0.8em;">
 											<div class="text-caption" style="font-weight: bold; color: #24d2d9;">
 												Interface Settings</div>
+
+											<div
+												style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.4em; flex-wrap: wrap; gap: 0.5em;">
+												<span style="color: #aaa;">Language</span>
+												<div class="btn-group" id="languageButtons"
+													style="display: flex; gap: 2px; flex-wrap: wrap;"></div>
+											</div>
 
 											<div
 												style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.4em;">
@@ -1688,6 +1696,9 @@
 	<script type="text/javascript" src="js/lib/UPNG.js"></script>
 	<script type="text/javascript" src="js/lib/test.js"></script>
 	<script type="text/javascript" src="js/el.js"></script>
+	<script type="text/javascript" src="js/lang/zh-CN.js"></script>
+	<script type="text/javascript" src="js/lang/zh-CN.changelog.js"></script>
+	<script type="text/javascript" src="js/i18n.js"></script>
 	<script type="text/javascript" src="js/changelog.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/ui_dialogs.js"></script>

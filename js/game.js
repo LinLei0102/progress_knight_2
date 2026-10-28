@@ -947,10 +947,10 @@ async function rebirthFive() {
 
     if ((!gameData.perks.save_challenges) && (getTotalPerkPoints() >= getPerkCost('save_challenges'))) {
         const isConfirmed = await customConfirm({
-            title: "SANITY CHECK",
-            text: "You haven't purchased the \"Save challenges\" metaverse perk, are you sure you want to enter the Metaverse?",
-            confirmText: "Do it anyway",
-            cancelText: "Oops, my bad!",
+            title: I18N.t("sanityCheckTitle", "SANITY CHECK"),
+            text: I18N.t("sanityCheckText", "You haven't purchased the \"Save challenges\" metaverse perk, are you sure you want to enter the Metaverse?"),
+            confirmText: I18N.t("doItAnyway", "Do it anyway"),
+            cancelText: I18N.t("oopsMyBad", "Oops, my bad!"),
             confirmColor: "red",
             cancelColor: "blue"
 

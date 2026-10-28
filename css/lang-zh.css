@@ -1,0 +1,41 @@
+/* ============================================================
+ * lang-zh.css —— 中文字体与排版微调
+ * 只在 <html lang="zh-CN"> 时生效，不影响英文原版观感。
+ * ============================================================ */
+
+html[lang="zh-CN"] body,
+html[lang="zh-CN"] .w3-button,
+html[lang="zh-CN"] button,
+html[lang="zh-CN"] input,
+html[lang="zh-CN"] select {
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
+                 "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei",
+                 Verdana, sans-serif;
+}
+
+/* 汉字没有西文那种 x-height 差异，略微放大一点更易读 */
+html[lang="zh-CN"] body {
+    letter-spacing: 0.02em;
+}
+
+/* 表格里的任务名：中文字符串更短，允许略小的行距 */
+html[lang="zh-CN"] .progress-text,
+html[lang="zh-CN"] .single-line-text,
+html[lang="zh-CN"] .single-line-text-pb {
+    letter-spacing: 0.01em;
+}
+
+/* 数字 / 金额继续保持等宽西文观感 */
+html[lang="zh-CN"] .coins,
+html[lang="zh-CN"] .tooltip-lvl-span,
+html[lang="zh-CN"] .currency-bold {
+    font-family: Verdana, "Segoe UI", sans-serif;
+}
+
+/* Tooltip 正文在中文字体下适当加大行高 */
+html[lang="zh-CN"] .job-tooltip-body,
+html[lang="zh-CN"] .skill-tooltip-body,
+html[lang="zh-CN"] .shop-tooltip-body,
+html[lang="zh-CN"] .tooltip-body {
+    line-height: 1.55;
+}

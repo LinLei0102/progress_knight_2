@@ -62,7 +62,7 @@ class Skill extends Task {
 
     getEffectDescription() {
         let effect = this.getEffect()
-        return "x" + format(effect, 2) + " " + this.baseData.description
+        return "x" + format(effect, 2) + " " + I18N.d(this.baseData.description)
     }
 }
 
@@ -137,7 +137,7 @@ class Item {
             if (this.isProperty) description = "Happiness"
         }
 
-        return "x" + format(effect) + " " + description
+        return "x" + format(effect) + " " + I18N.d(description)
     }
 
     getExpense() {

@@ -81,8 +81,8 @@ function showLightModeConfirm() {
 function customConfirm({
     title,
     text,
-    confirmText = "OK",
-    cancelText = "Cancel",
+    confirmText = I18N.t("ok", "OK"),
+    cancelText = I18N.t("cancel", "Cancel"),
     confirmColor = "blue",
     cancelColor = "",
     delay = 0,

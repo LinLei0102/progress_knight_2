@@ -4,3 +4,10 @@
 /debug.html
 /js/lib/debug.js
 /cong.txt
+
+# 本地工作区数据（Agent 记忆、缓存等），不随仓库发布
+/.workbuddy/
+
+# 自测工具的依赖（package.json / lock 需要提交，node_modules 不提交）
+/tools/node_modules/
+/tools/_strmap.json

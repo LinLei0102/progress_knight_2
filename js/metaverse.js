@@ -263,7 +263,8 @@ const perk_descriptions = {
 
 /** @param {string} perkName */
 function getMetaversePerkName(perkName) {
-    return perk_names[perkName]
+    const localized = I18N.n(perkName)
+    return localized !== perkName ? localized : perk_names[perkName]
 }
 
 /** @param {string} perkName */
@@ -325,14 +326,14 @@ function collectPerkPoints(value) {
 
 function getBoostCooldownString() {
     return gameData.boost_active
-        ? "Active: " + formatTime(gameData.boost_timer)
-        : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
+        ? I18N.t("boostActive", "Active: ") + formatTime(gameData.boost_timer)
+        : (gameData.boost_cooldown <= 0 ? I18N.t("readyExclaim", "Ready!") : I18N.t("cooldown", "Cooldown: ") + formatTime(gameData.boost_cooldown))
 }
 
 function getBoostCooldownButtonString() {
     return gameData.boost_active
         ? formatTime(gameData.boost_timer)
-        : (gameData.boost_cooldown <= 0 ? "Ready!" : formatTime(gameData.boost_cooldown))
+        : (gameData.boost_cooldown <= 0 ? I18N.t("readyExclaim", "Ready!") : formatTime(gameData.boost_cooldown))
 }
 
 function getTimeIsAFlatCircleXP() {

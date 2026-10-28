@@ -161,12 +161,12 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
     const task = gameData.taskData[nextEntityName];
     visibilityMap.effect = true;
 
-    let effectValueText = "[Unknown]"
+    let effectValueText = I18N.t('[Unknown]', "[Unknown]")
     if (task.unlocked) {
         if (task instanceof Skill)
-            effectValueText = task.name + (task.baseData.description ? " (" + task.baseData.description + ")" : "")
+            effectValueText = I18N.n(task.name) + (task.baseData.description ? " (" + I18N.d(task.baseData.description) + ")" : "")
         else
-            effectValueText = task.name
+            effectValueText = I18N.n(task.name)
     }
 
     safeUpdateText(elements.effectValue, effectValueText)
@@ -176,7 +176,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
 
     if (requirementObject instanceof EvilRequirement) {
         visibilityMap.evil = true;
-        safeUpdateText(elements.evil, format(curRequiredValue) + " evil")
+        safeUpdateText(elements.evil, format(curRequiredValue) + " " + I18N.t("evil", "evil"))
         result.progressPercent = getDynamicProgress(gameData.evil, curRequiredValue);
         result.pendingPercent = getDynamicProgress(gameData.evil + getEvilGainAvailable(), curRequiredValue);
         result.targetColorClass = "color-evil";
@@ -184,7 +184,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
     }
     else if (requirementObject instanceof EssenceRequirement) {
         visibilityMap.essence = true;
-        safeUpdateText(elements.essence, format(curRequiredValue) + " essence")
+        safeUpdateText(elements.essence, format(curRequiredValue) + " " + I18N.t("essence", "essence"))
         result.progressPercent = getDynamicProgress(gameData.essence, curRequiredValue);
         result.pendingPercent = getDynamicProgress(gameData.essence + getEssenceGainAvailable(), curRequiredValue);
         result.targetColorClass = "color-essence";
@@ -192,7 +192,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
     }
     else if (requirementObject instanceof DarkMatterRequirement) {
         visibilityMap.darkMatter = true;
-        safeUpdateText(elements.darkMatter, format(curRequiredValue) + " Dark Matter")
+        safeUpdateText(elements.darkMatter, format(curRequiredValue) + " " + I18N.t("darkMatter", "Dark Matter"))
         result.progressPercent = getDynamicProgress(gameData.dark_matter, curRequiredValue);
         result.pendingPercent = getDynamicProgress(gameData.dark_matter + getDarkMatterGainAvailable(), curRequiredValue);
         result.targetColorClass = "color-dark-matter";
@@ -200,7 +200,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
     }
     else if (requirementObject instanceof HypercubeRequirement) {
         visibilityMap.hypercube = true;
-        safeUpdateText(elements.hypercube, format(curRequiredValue) + " hypercubes")
+        safeUpdateText(elements.hypercube, format(curRequiredValue) + " " + I18N.t("hypercubes", "hypercubes"))
         result.progressPercent = getDynamicProgress(gameData.hypercubes, curRequiredValue);
         result.pendingPercent = getDynamicProgress(gameData.hypercubes + getHypercubeGenerationAvailable(), curRequiredValue);
         result.targetColorClass = "color-hypercubes";
@@ -209,7 +209,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
     else if (requirementObject instanceof AgeRequirement) {
         console.log("requirementObject instanceof AgeRequirement in handleTaskRequirements as essence!")
         visibilityMap.essence = true;
-        safeUpdateText(elements.essence, "Age " + format(curRequiredValue))
+        safeUpdateText(elements.essence, I18N.f("age_only", "Age " + format(curRequiredValue), { v: format(curRequiredValue) }))
         result.progressPercent = getDynamicProgress(gameData.days, curRequiredValue);
         result.pendingPercent = getDynamicProgress(gameData.days, curRequiredValue);
         result.targetColorClass = "color-essence";
@@ -232,7 +232,7 @@ function handleTaskRequirements(elements, nextEntityName, requirementObject, req
                 reqCount++
             } else {
 
-                const reqTaskName = gameData.taskData[requirement.task].unlocked ? requirement.task : "[Unknown]"
+                const reqTaskName = gameData.taskData[requirement.task].unlocked ? I18N.n(requirement.task) : I18N.t("[Unknown]", "[Unknown]")
 
                 finalText += " " + reqTaskName + " " + formatLevel(reqTask.level) + "/" + formatLevel(curRequiredValue) + ",";
 
@@ -274,9 +274,9 @@ function handleItemRequirements(elements, nextEntityName, requirements, visibili
     formatCoins(elements.coin, curRequiredValue);
     const item = gameData.itemData[nextEntityName];
 
-    let effectValueText = "[Unknown]"
+    let effectValueText = I18N.t("[Unknown]", "[Unknown]")
     if (item.unlocked)
-        effectValueText = (item.baseData.description ? item.baseData.description : "Happiness")
+        effectValueText = I18N.d(item.baseData.description ? item.baseData.description : "Happiness")
 
     safeUpdateText(elements.effectValue, effectValueText)
 
@@ -300,16 +300,16 @@ function handleMilestoneRequirements(elements, nextEntityName, requirements, vis
     const curRequiredValue = requirements[0].requirement
 
     visibilityMap.essence = true;
-    safeUpdateText(elements.essence, format(curRequiredValue) + " essence")
+    safeUpdateText(elements.essence, format(curRequiredValue) + " " + I18N.t("essence", "essence"))
     const milestone = milestoneData[nextEntityName];
     if (milestone.baseData.description) {
         visibilityMap.effect = true;
-        let effectValueText = "[Unknown]"
+        let effectValueText = I18N.t("[Unknown]", "[Unknown]")
         if (gameData.stats.maxEssenceReached > milestone.expense) {
             if (nextEntityName == "Magic Eye")
-                effectValueText = nextEntityName + ': ' + milestone.baseData.description.replace('65', `${getEyeRequirement()}`)
+                effectValueText = I18N.n(nextEntityName) + ': ' + I18N.d(milestone.baseData.description).replace('65', `${getEyeRequirement()}`)
             else
-                effectValueText = nextEntityName + ': ' + milestone.baseData.description
+                effectValueText = I18N.n(nextEntityName) + ': ' + I18N.d(milestone.baseData.description)
         }
         safeUpdateText(elements.effectValue, effectValueText)
     }

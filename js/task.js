@@ -236,11 +236,11 @@ class Task {
         const gameSpeed = getGameSpeed()
 
         if (gameSpeed <= 0) {
-            return "[Paused]"
+            return I18N.t("paused", "[Paused]")
         }
 
         if (gameDaysLeft === Infinity || isNaN(gameDaysLeft)) {
-            return "Infinity"
+            return I18N.t("Infinity", "Infinity")
         }
 
         const realSecondsLeft = gameDaysLeft / gameSpeed

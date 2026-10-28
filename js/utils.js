@@ -56,7 +56,7 @@ function fastFloorToString(number, decimals) {
  */
 function format(number, decimals = 1) {
     if (number === Infinity)
-        return "Infinity"
+        return I18N.t('Infinity', "Infinity")
     const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
         "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
 
@@ -236,25 +236,27 @@ function safeFormatCoins(target, coins) {
  * @returns {string}
  */
 function formatTime(sec_num, show_ms = false) {
-    if (sec_num == null) return "unknown";
+    if (sec_num == null) return I18N.t('unknown', "unknown");
     if (sec_num < 0) return '-' + formatTime(-sec_num, show_ms);
+
+    const unitSep = I18N.t('unit_sep', ' ');
 
     if (sec_num >= 31536000000) { // 1000 * 31536000
         let years = floor(sec_num / 31536000);
-        return formatWhole(years) + ' years';
+        return formatWhole(years) + unitSep + I18N.t('unit_years_long', 'years');
     }
 
     let prefix = '';
 
     if (sec_num >= 31536000) {
         let years = floor(sec_num / 31536000);
-        prefix += years + 'y ';
+        prefix += years + I18N.t('unit_year', 'y') + unitSep;
         sec_num %= 31536000;
     }
 
     if (sec_num >= 86400) {
         let days = floor(sec_num / 86400);
-        prefix += days + 'd ';
+        prefix += days + I18N.t('unit_day', 'd') + unitSep;
         sec_num %= 86400;
     }
 
@@ -354,24 +356,27 @@ function formatAge(days) {
     const years = daysToYears(days)
     const day = getCurrentDay(days)
     if (years > 10000)
-        return "Age " + format(years)
+        return I18N.f('age_years', "Age " + format(years), { age: format(years) })
     else
-        return "Age " + years + " Day " + day
+        return I18N.f('age_days', "Age " + years + " Day " + day, { age: years, day: day })
 }
 
 /** @param {number} days */
 function formatGameDays(days) {
-    if (days === Infinity || isNaN(days)) return "Infinity"
+    if (days === Infinity || isNaN(days)) return I18N.t('Infinity', "Infinity")
 
     const years = floor(days / 365)
     const remainingDays = floor(days % 365)
 
     if (years > 10000) {
-        return format(years) + " years"
-    } else if (years > 0) {
-        return `${years} year${years > 1 ? 's' : ''} ${remainingDays} day${remainingDays !== 1 ? 's' : ''}`
-    } else {
+        return format(years) + I18N.t('unit_sep', ' ') + I18N.t('unit_years_long', 'years')
+    } else if (I18N.isDefault) {
+        if (years > 0) return `${years} year${years > 1 ? 's' : ''} ${remainingDays} day${remainingDays !== 1 ? 's' : ''}`
         return `${remainingDays} day${remainingDays !== 1 ? 's' : ''}`
+    } else if (years > 0) {
+        return I18N.f('game_days_ymd', `${years} 年 ${remainingDays} 天`, { y: years, d: remainingDays })
+    } else {
+        return I18N.f('game_days_d', `${remainingDays} 天`, { d: remainingDays })
     }
 }
 
@@ -412,10 +417,11 @@ function toId(str) {
  * @returns 
  */
 function getFormattedChallengeTaskGoal(taskName, level) {
+    const lvLabel = I18N.t("lvlWord", " lvl ")
     if (level < 100000)
-        return taskName + " lvl " + formatLevel(level)
+        return I18N.n(taskName) + lvLabel + formatLevel(level)
     else
-        return "Great " + taskName + " lvl " + formatLevel(ceil(level / 1000))
+        return I18N.t("greatPrefix", "Great ") + I18N.n(taskName) + lvLabel + formatLevel(ceil(level / 1000))
 }
 
 /**
@@ -424,10 +430,15 @@ function getFormattedChallengeTaskGoal(taskName, level) {
  * @returns 
  */
 function getFormattedTitle(parameter) {
+    // 先按原始 id 查表（challenges 的 id 用下划线，标题却会丢掉冠词，
+    // 例如 "rich_and_the_poor" → "Rich and the poor"，两者都要能命中）
+    const direct = I18N.n(parameter)
+    if (direct !== parameter) return direct
+
     let title = parameter.replaceAll("_", " ")
     title = title.charAt(0).toUpperCase() + title.slice(1)
 
-    return title
+    return I18N.n(title)
 }
 
 

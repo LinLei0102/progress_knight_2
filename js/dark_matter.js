@@ -167,10 +167,10 @@ async function buyAMiracle() {
     if (canBuyAMiracle()) {
         if (gameData.dark_matter < 30) {
             const isConfirmed = await customConfirm({
-                title: "CONFIRM PURCHASE",
-                text: "Are you sure you want to buy A Miracle? Your XP gain will decrease!",
-                confirmText: "Buy",
-                cancelText: "Cancel"
+                title: I18N.t("confirmPurchaseTitle", "CONFIRM PURCHASE"),
+                text: I18N.t("confirmMiracleText", "Are you sure you want to buy A Miracle? Your XP gain will decrease!"),
+                confirmText: I18N.t("buy", "Buy"),
+                cancelText: I18N.t("cancel", "Cancel")
             });
 
             if (!isConfirmed) return;
@@ -187,10 +187,10 @@ async function resetSkillTree() {
 
     const isConfirmed = needConfirmation
         ? await customConfirm({
-            title: "RESET ABILITIES",
-            text: "Are you sure you want to reset your Dark Matter Abilities? You will NOT get your Dark Matter back!",
-            confirmText: "Yes, reset it and lose Dark Matter",
-            cancelText: "Save my precious Dark Matter",
+            title: I18N.t("resetAbilitiesTitle", "RESET ABILITIES"),
+            text: I18N.t("confirmResetSkillsText", "Are you sure you want to reset your Dark Matter Abilities? You will NOT get your Dark Matter back!"),
+            confirmText: I18N.t("confirmResetSkillsYes", "Yes, reset it and lose Dark Matter"),
+            cancelText: I18N.t("confirmResetSkillsNo", "Save my precious Dark Matter"),
             confirmColor: "red",
             cancelColor: "green"
         })

@@ -43,7 +43,7 @@ function initializeUI() {
         hideMaxLevel()
 
     if (isTouchDevice)
-        safeUpdateText("RequireShiftforTooltip", "Hide tooltips");
+        safeUpdateText("RequireShiftforTooltip", I18N.t("hideTooltips", "Hide tooltips"));
 }
 
 function showMaxLevel() {
@@ -165,7 +165,7 @@ function renderSideBar() {
     safeUpdateText("lifespanDisplay", formatWhole(daysToYears(getLifespan())))
     safeUpdateText("realtimeDisplay", formatTime(gameData.realtime))
     safeUpdateText("boostCooldownDisplay", getBoostCooldownButtonString())
-    safeUpdateText("pauseButton", gameData.paused ? "Play" : "Pause")
+    safeUpdateText("pauseButton", gameData.paused ? I18N.t("play", "Play") : I18N.t("pause", "Pause"))
     safeUpdateHidden("boostPanel", gameData.rebirthFiveCount == 0)
     renderBoostButton("boostButton")
     safeFormatCoins("coinDisplay", gameData.coins)
@@ -210,7 +210,7 @@ function renderSideBar() {
         safeUpdateClass(rebirth5button, "color-hypercubes", true)
     }
     else {
-        safeUpdateText("metaversePerkPointsGainButtonDisplay", "Unlock Hypercubes")
+        safeUpdateText("metaversePerkPointsGainButtonDisplay", I18N.t("unlockHypercubes", "Unlock Hypercubes"))
     }
 
     const indicatorConfigs = [
@@ -361,9 +361,9 @@ function renderEventUI() {
 
     const event = eventsData[event_id];
 
-    safeUpdateText("eventName", event.name);
-    safeUpdateText("eventDescription", event.desc);
-    safeUpdateText("eventBuff", event.effect + event.mult);
+    safeUpdateText("eventName", I18N.n(event.name));
+    safeUpdateText("eventDescription", I18N.n(event.desc));
+    safeUpdateText("eventBuff", I18N.n(event.effect) + event.mult);
     safeUpdateText("eventTime", formatTime(getSecondsUntilEventEnd()));
 
     if (uiEventStyleCache.currentStyle !== event.style) {
@@ -475,7 +475,8 @@ function renderProgressBar(task, progressFill, progressBar) {
 function renderTaskRow(task) {
     const row = task.row
 
-    safeUpdateText(`${row} .progressBar .name`, (task.isHero ? "Great " : "") + task.name);
+    safeUpdateText(`${row} .progressBar .name`,
+        (task.isHero ? I18N.t("greatPrefix", "Great ") : "") + I18N.n(task.name));
 
     const progressBar = el(`${row} .progressBar`);
     const progressFill = el(`${row} .progressFill`);
@@ -526,6 +527,28 @@ function renderShop() {
 const numberWords = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 const numberWordsCapitalized = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']
 
+/** 数字 → 中文数字（1-10），英文环境返回原单词 */
+function formatNumberWord(n) {
+    if (!I18N.zh()) return numberWords[n] !== undefined ? numberWords[n] : String(n)
+    return I18N.t('num_' + n, String(n))
+}
+
+/** "1 century" / "5 whole centuries" 之类的纪元描述 */
+function formatCenturyText(n) {
+    if (n === 200) return I18N.t('century2', '2 whole centuries')
+    if (n === 100) return I18N.t('century1', '1 century')
+    if (n === 1000) return I18N.t('millennium', 'a millennium')
+    if (I18N.zh()) return I18N.f('centuryN', `${n} 个世纪`, { n: n / 100 })
+    return n > 100 ? `${n / 100} whole centuries` : '1 century'
+}
+
+/** "five hundred " 之类的百位词 */
+function formatHundredWord(n) {
+    if (n === 10) return I18N.t('thousandWord', 'thousand ')
+    if (I18N.zh()) return I18N.f('hundredN', `${n}百`, { n: formatNumberWord(n) })
+    return `${numberWords[n]} hundred `
+}
+
 function renderRebirth() {
     safeUpdateText("age0", formatWhole(getAge0Requirement()))
     safeUpdateText("age1", formatWhole(getAge1Requirement()))
@@ -533,19 +556,17 @@ function renderRebirth() {
 
     // 1. Evil
     const evilReq = getEvilRequirement()
-    const evilText = evilReq === 200 ? "2 whole centuries" :
-        evilReq === 100 ? "1 century" :
-            `${evilReq} years`
+    const evilText = formatCenturyText(evilReq)
     safeUpdateText("age2", evilText)
     safeUpdateText("age2a", formatWhole(evilReq))
 
     // 2. Void
     const voidReq = getVoidRequirement()
-    const voidText = voidReq === 1000 ? "a millennium" :
-        voidReq > 100 ? `${voidReq / 100} whole centuries` :
-            "1 century"
+    const voidText = formatCenturyText(voidReq)
 
-    const voidWordText = voidReq === 1000 ? "thousand " : `${numberWords[voidReq / 100]} hundred `
+    const voidWordText = voidReq === 1000
+        ? I18N.t("thousandWord", "thousand ")
+        : formatHundredWord(voidReq / 100)
 
     safeUpdateText("age3", voidText)
     safeUpdateText("age3a", voidWordText)
@@ -555,9 +576,11 @@ function renderRebirth() {
     let celestialText = ""
 
     if (celestialReq >= 1000) {
-        celestialText = celestialReq === 1000 ? "a millennium" : `${numberWords[celestialReq / 1000]} millennia`
+        celestialText = celestialReq === 1000
+            ? I18N.t("millennium", "a millennium")
+            : I18N.f("millenniaN", `${numberWords[celestialReq / 1000]} millennia`, { n: formatNumberWord(celestialReq / 1000) })
     } else {
-        celestialText = celestialReq === 100 ? "1 century" : `${celestialReq / 100} whole centuries`
+        celestialText = formatCenturyText(celestialReq)
     }
 
     const celestialCapitalized = celestialText.charAt(0).toUpperCase() + celestialText.slice(1)
@@ -575,7 +598,7 @@ function renderRebirth() {
 }
 
 function renderEvilPerks() {
-    safeUpdateText("eppInfo", (gameData.essence > 0) ? "Evil and buffed by Essence" : "Evil")
+    safeUpdateText("eppInfo", (gameData.essence > 0) ? I18N.t("evilAndBuffed", "Evil and buffed by Essence") : I18N.t("evil", "Evil"))
     safeUpdateText("evilperksDisplay", format(gameData.evil_perks_points, 3))
     safeUpdateText("evilperksGainDisplay", format(getEvilPerksGeneration() * 365))
     safeUpdateText("eyeReq", formatWhole(getEyeRequirement()))
@@ -732,7 +755,7 @@ function renderMilestones() {
         const row = getQuerySelector(milestone.name)
         safeUpdateText(`${row} .essence`, format(milestone.expense))
 
-        let desc = milestone.description
+        let desc = I18N.d(milestone.description)
 
         let effect = 1
         if (milestone.getEffect != null)
@@ -773,7 +796,7 @@ function renderMetaverse() {
 
     for (var i = 0; i < 3; i++) {
         const nextH = getNextPowerOfNumber(gameData.hypercubes * pow(10, i))
-        const newText = format(nextH) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(i))
+        const newText = I18N.f("hypercubesIn", format(nextH) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(i)), { n: format(nextH), t: formatTime(getTimeTillNextHypercubePower(i)) })
         const elem = elById("timeTillNextHypercubePower" + (i + 1))
 
         safeUpdateText(elem, newText)
@@ -815,7 +838,7 @@ function renderMetaverse() {
 
     const isAltarActive = gameData.metaverse.challenge_altar !== 0;
     safeUpdateText("challengeAltarCost", format(challengeAltarCost()))
-    safeUpdateText("challengeAltarState", isAltarActive ? "Active" : "")
+    safeUpdateText("challengeAltarState", isAltarActive ? I18N.t("active", "Active") : "")
     safeUpdateDisabled("challengeAltarButton", !canBuyChallengeAltar())
     safeUpdateClass("challengeAltarButton", "hidden", isAltarActive)
 
@@ -941,7 +964,7 @@ function renderDarkMatterShop() {
     const isMiracleVisible = !hasMiracle || !isEnoughDarkMatter;
     safeUpdateClass(aMiracleBuyButton, "hidden", !isMiracleVisible);
     if (isMiracleVisible)
-        safeUpdateText(aMiracleBuyButton, hasMiracle ? "Refund" : "Buy a Miracle");
+        safeUpdateText(aMiracleBuyButton, hasMiracle ? I18N.t("refund", "Refund") : I18N.t("buyMiracle", "Buy a Miracle"));
 
     const isGeneratorInfinity = getDarkOrbGeneration() === Infinity;
     safeUpdateClass("darkOrbGeneratorBuyButton", "hidden", isGeneratorInfinity);
@@ -991,17 +1014,17 @@ function renderDarkMatterSkillTreeButton(id, categoryBought, elementBought, canB
         safeUpdateDisabled(element, categoryBought || !canBuy);
 
         if (categoryBought) {
-            safeUpdateText(id, elementBought ? "Accepted" : "Rejected");
+            safeUpdateText(id, elementBought ? I18N.t("accepted", "Accepted") : I18N.t("rejected", "Rejected"));
             safeUpdateClass(element, "w3-green", elementBought);
             safeUpdateClass(element, "w3-red", !elementBought);
         } else {
-            safeUpdateText(id, "Buy");
+            safeUpdateText(id, I18N.t("buy", "Buy"));
             safeUpdateClass(element, "w3-green", false);
             safeUpdateClass(element, "w3-red", false);
         }
     } else {
         safeUpdateDisabled(element, elementBought);
-        safeUpdateText(id, elementBought ? "Accepted" : "Buy");
+        safeUpdateText(id, elementBought ? I18N.t("accepted", "Accepted") : I18N.t("buy", "Buy"));
 
         safeUpdateClass(element, "w3-green", elementBought);
         safeUpdateClass(element, "w3-red", false);
@@ -1133,17 +1156,20 @@ function renderRequirements() {
 function createHeaderRow(templates, categoryType, categoryName, categoryTypeName) {
     const headerRow = templates.headerRow.content.firstElementChild.cloneNode(true)
     const categoryElement = headerRow.querySelector(".category")
+    const displayCategoryName = I18N.n(categoryName)
 
     if (categoryType == itemCategories) {
-        categoryElement.querySelector(".name").textContent = categoryName
+        categoryElement.querySelector(".name").textContent = displayCategoryName
     } else {
-        categoryElement.textContent = categoryName
+        categoryElement.textContent = displayCategoryName
     }
 
 
     if (categoryType == jobCategories || categoryType == skillCategories) {
         const valueTypeElement = headerRow.querySelector(".valueType")
-        valueTypeElement.textContent = categoryType == jobCategories ? "Income" : "Effect"
+        valueTypeElement.textContent = categoryType == jobCategories
+            ? I18N.t("Income", "Income")
+            : I18N.t("Effect", "Effect")
     }
 
     headerRow.style.backgroundColor = headerRowColors[categoryName]
@@ -1168,7 +1194,7 @@ function createRequiredRow(categoryName) {
 function createRow(templates, name, categoryName, categoryType, categoryTypeName) {
     const row = templates.row.content.firstElementChild.cloneNode(true)
 
-    row.querySelector(".name").textContent = name
+    row.querySelector(".name").textContent = I18N.n(name)
     row.id = "row" + toId(name)
 
     if (categoryType == itemCategories) {
@@ -1457,14 +1483,14 @@ function setLayout(id, needsave = true) {
         setTabDarkMatter("shopTab", false)
 
         maincolumnDM.classList.remove("settings-main-column")
-        if (dmTitle) dmTitle.textContent = "Dark Matter Abilities "
+        if (dmTitle) dmTitle.textContent = I18N.t("dmAbilities", "Dark Matter Abilities ")
     } else {
         tabcolumnDM.classList.remove("hidden")
         const skillTreeTab = elById("skillTreeTab")
         skillTreeTab?.appendChild(skillTreePage)
 
         maincolumnDM.classList.add("settings-main-column")
-        if (dmTitle) dmTitle.textContent = "Dark Matter: "
+        if (dmTitle) dmTitle.textContent = I18N.t("dmColon", "Dark Matter: ")
     }
 
     if (isWideLayout) {
@@ -1639,8 +1665,9 @@ function setSubTab(tab, tabClassName, buttonClassName, needsave = true) {
 function setTabSettings(tab, needsave = true) {
     if (tab === 'changelogTab') {
         const changelogEl = el("#changelog");
-        if (changelogEl && changelogEl.textContent !== changelogText)
-            changelogEl.textContent = changelogText;
+        const localizedChangelog = I18N.lore("changelog", changelogText);
+        if (changelogEl && changelogEl.textContent !== localizedChangelog)
+            changelogEl.textContent = localizedChangelog;
     }
 
     gameData.settings.settingsTab = tab
